@@ -25,7 +25,6 @@ body{
     align-items:center;
     text-align:center;
     z-index:10;
-
     background-image:url("diana.jpg");
     background-size:cover;
     background-position:center;
@@ -59,7 +58,7 @@ body{
     border-radius:20px;
 }
 
-/* TARJETA */
+/* CARD */
 #card{
     position:absolute;
     top:50%;
@@ -89,7 +88,10 @@ body{
 }
 
 canvas{
-    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
 }
 </style>
 
@@ -119,7 +121,7 @@ canvas{
 <script type="module">
 import * as THREE from 'three';
 
-/* 💖 FRASES CORREGIDAS Y LIMPIAS */
+/* 💖 FRASES CORREGIDAS */
 const frases = [
 "Esa sonrisa tuya, que desarma cualquier tristeza y me deja sin defensa.",
 "Tu mirada única, que dice más que mil palabras y me encuentra siempre.",
@@ -141,9 +143,17 @@ const frases = [
 
 let scene, camera, renderer, objects = [];
 
-document.getElementById("btnStart").addEventListener("click", start);
-document.getElementById("btnClose").addEventListener("click", () => {
-    document.getElementById("card").style.display = "none";
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+/* BOTÓN SEGURO */
+window.addEventListener("DOMContentLoaded", () => {
+
+    document.getElementById("btnStart").addEventListener("click", start);
+
+    document.getElementById("btnClose").addEventListener("click", () => {
+        document.getElementById("card").style.display = "none";
+    });
 });
 
 function start(){
@@ -191,9 +201,6 @@ function start(){
 }
 
 /* CLICK */
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
 window.addEventListener("click",(e)=>{
 
     if(!camera) return;
