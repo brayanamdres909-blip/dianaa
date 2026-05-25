@@ -78,7 +78,7 @@ body{
     cursor:pointer;
 }
 
-/* CURSOR */
+/* CANVAS */
 canvas{
     display:block;
 }
@@ -97,14 +97,14 @@ canvas{
 
 <div id="intro">
 <h1>DIANA ALEJANDRA</h1>
-<p>5 meses contigo… y todavía siento mariposas cada vez que te veo.</p>
-<button onclick="start()">Entrar a nuestro universo</button>
+<p>Para la más hermosa, la más preciosa… Diana Alejandra.</p>
+<button id="btnStart">Entrar a nuestro universo</button>
 </div>
 
 <div id="card">
 <h2 id="title"></h2>
 <p id="text"></p>
-<button onclick="closeCard()">Cerrar</button>
+<button id="btnClose">Cerrar</button>
 </div>
 
 <script type="module">
@@ -113,25 +113,22 @@ import * as THREE from 'three';
 const frases = [
 "Tus ojos verdes que me pierden",
 "Tu sonrisa que me desarma",
-"La forma en que dices mi nombre",
 "Tu mirada cuando me ves",
-"Lo hermosa que eres sin darte cuenta",
+"Lo hermosa que eres",
 "Tu forma de abrazarme",
-"Tu voz cuando me hablas suave",
-"Nuestros 5 meses juntos",
-"La conexión que tenemos",
-"Tu forma de hacerme feliz",
+"Tu voz",
 "Tu esencia",
-"Tu alma",
 "Tus besos",
-"Tus abrazos",
 "Tu presencia",
-"Lo que siento por ti",
 "Todo lo que eres",
 "Que seas tú… Diana Alejandra"
 ];
 
 let scene, camera, renderer, objects=[];
+
+// BOTONES (SOLUCIONADO)
+document.getElementById("btnStart").addEventListener("click", start);
+document.getElementById("btnClose").addEventListener("click", closeCard);
 
 function start(){
     document.getElementById("intro").style.display="none";
@@ -171,6 +168,8 @@ window.addEventListener("click",(e)=>{
     mouse.x=(e.clientX/window.innerWidth)*2-1;
     mouse.y=-(e.clientY/window.innerHeight)*2+1;
 
+    if(!camera) return;
+
     raycaster.setFromCamera(mouse,camera);
     const intersects=raycaster.intersectObjects(objects);
 
@@ -180,7 +179,7 @@ window.addEventListener("click",(e)=>{
         document.getElementById("title").innerText=obj.userData.text;
 
         document.getElementById("text").innerText=
-        "Diana Alejandra… no es solo esto. Eres la razón por la que todo tiene sentido para mí. Estos 5 meses contigo han sido únicos y no los cambiaría por nada.";
+        "Diana Alejandra… la más hermosa, la más preciosa. No eres solo alguien especial, eres quien le dio sentido a todo en mi vida.";
 
         document.getElementById("card").style.display="block";
     }
@@ -202,6 +201,7 @@ function animate(){
 }
 
 window.addEventListener("resize",()=>{
+    if(!camera) return;
     camera.aspect=innerWidth/innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth,innerHeight);
