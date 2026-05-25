@@ -1,61 +1,46 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>DIANA ALEJANDRA</title>
 
-    <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<style>
 
-    <title>NUESTRO UNIVERSO</title>
+:root{
+    --primary:#ffb3c6;
+    --secondary:#ff809f;
+    --accent:#ffd1dc;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    
+body{
+    overflow:hidden;
+    background:#030102;
+    font-family:'Montserrat',sans-serif;
+    color:white;
+}
 
-    <style>
+#canvas-container{
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:1;
+}
 
-        :root {
-
-            --primary: #ffb3c6;
-
-            --secondary: #ff809f;
-
-            --accent: #ffd1dc;
-
-            --text-glow: 0 0 15px rgba(255, 179, 198, 0.6), 0 0 30px rgba(255, 128, 159, 0.4);
-
-        }
-
-        
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body { 
-
-            margin: 0; 
-
-            overflow: hidden; 
-
-            background-color: #030102; 
-
-            font-family: 'Montserrat', sans-serif; 
-
-            color: white; 
-
-            -webkit-font-smoothing: antialiased;
-
-        }
-
-        
-
-        #canvas-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
-
-
-
-        /* Pantalla de Inicio Elegante */
-position:absolute;
+/* PANTALLA PRINCIPAL */
+#intro-screen{
+    position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
     display:flex;
@@ -64,670 +49,342 @@ position:absolute;
     align-items:center;
     text-align:center;
     z-index:10;
+
     background-image:url("diana.jpg");
     background-size:cover;
     background-position:center;
-
-        #intro-screen {
-
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-
-            background: radial-gradient(circle at center, rgba(30,10,20,0.8) 0%, rgba(0,0,0,1) 100%);
-
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-
-            z-index: 100; transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
-
-        }
-
-        
-
-        #intro-screen h1 {
-
-            font-family: 'Cormorant Garamond', serif; font-weight: 300; font-style: italic; font-size: 3.5rem; letter-spacing: 6px; 
-
-            margin-bottom: 2rem; text-align: center; text-shadow: var(--text-glow); color: var(--accent);
-
-            opacity: 0; transform: translateY(20px); animation: fadeIn 3s ease forwards 0.5s;
-
-        }
-
-
-
-        #error-msg {
-
-            font-size: 0.9rem; color: #ff6b6b; margin-bottom: 20px; font-weight: 300; text-align: center; max-width: 80%;
-
-            display: none; /* Se mostrará si hay error de CORS */
-
-        }
-
-
-
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-
-
-        #btn-enter {
-
-            padding: 12px 45px; font-size: 1rem; font-weight: 300; background: transparent; color: var(--accent);
-
-            border: 1px solid rgba(255, 179, 198, 0.4); border-radius: 50px; cursor: pointer; transition: all 0.5s ease; 
-
-            font-family: inherit; letter-spacing: 4px; box-shadow: 0 0 20px rgba(255, 179, 198, 0.1);
-
-            opacity: 0; animation: fadeIn 3s ease forwards 1.5s;
-
-        }
-
-
-
-        #btn-enter:hover { background: rgba(255, 179, 198, 0.1); border-color: var(--primary); box-shadow: var(--text-glow); transform: scale(1.05); }
-
-
-
-        /* Tarjeta de Mensaje (Holográfica) */
-
-        #message-card {
-
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%) scale(0.95);
-
-            width: 85%; max-width: 450px; padding: 50px 40px; text-align: center;
-
-            background: linear-gradient(135deg, rgba(25, 10, 15, 0.7) 0%, rgba(10, 5, 10, 0.9) 100%);
-
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-
-            border: 1px solid rgba(255, 179, 198, 0.3); border-radius: 30px;
-
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(255, 179, 198, 0.1);
-
-            z-index: 50; opacity: 0; pointer-events: none; transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-
-        }
-
-        
-
-        #message-card.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-
-
-
-        #card-icon { font-size: 3.5rem; margin-bottom: 15px; filter: drop-shadow(0 0 20px rgba(255,179,198,0.8)); }
-
-
-
-        #card-title {
-
-            font-family: 'Montserrat', sans-serif; font-size: 0.9rem; letter-spacing: 3px; 
-
-            color: var(--primary); margin-bottom: 15px; text-transform: uppercase;
-
-        }
-
-
-
-        #card-text { 
-
-            font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.8rem; line-height: 1.4; 
-
-            font-weight: 300; margin-bottom: 35px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-
-        }
-
-
-
-        #btn-close {
-
-            background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.8);
-
-            padding: 10px 30px; border-radius: 30px; cursor: pointer; font-family: 'Montserrat', sans-serif;
-
-            font-size: 0.8rem; letter-spacing: 2px; transition: 0.4s; font-weight: 300;
-
-        }
-
-
-
-        #btn-close:hover { background: rgba(255,255,255,0.05); border-color: #fff; color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
-
-
-
-        /* Crosshair / Indicador de interacción */
-
-        #crosshair {
-
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-
-            width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3);
-
-            z-index: 40; pointer-events: none; transition: 0.3s ease;
-
-        }
-
-        #crosshair.active { background: rgba(255,255,255,1); box-shadow: 0 0 15px var(--primary); transform: translate(-50%, -50%) scale(2); }
-
-    </style>
-
-
-
-    <script type="importmap">
-
-        {
-
-            "imports": {
-
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-
-            }
-
-        }
-
-    </script>
+}
+
+#intro-screen::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.55);
+    backdrop-filter:blur(4px);
+}
+
+#intro-screen h1{
+    position:relative;
+    z-index:2;
+    font-size:4rem;
+    letter-spacing:6px;
+    color:#fff;
+    text-shadow:0 0 20px rgba(255,255,255,0.8);
+    margin-bottom:25px;
+    font-family:'Cormorant Garamond',serif;
+}
+
+#btn-enter{
+    position:relative;
+    z-index:2;
+    padding:14px 45px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    font-size:1rem;
+    letter-spacing:4px;
+    backdrop-filter:blur(10px);
+    transition:0.4s;
+}
+
+#btn-enter:hover{
+    transform:scale(1.05);
+    background:rgba(255,255,255,0.3);
+}
+
+/* TARJETA */
+#message-card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:85%;
+    max-width:420px;
+    padding:40px;
+    background:rgba(20,20,20,0.7);
+    backdrop-filter:blur(20px);
+    border-radius:30px;
+    text-align:center;
+    z-index:50;
+    opacity:0;
+    pointer-events:none;
+    transition:0.5s;
+}
+
+#message-card.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+#card-icon{
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+#card-title{
+    color:#ffb3c6;
+    margin-bottom:15px;
+    letter-spacing:2px;
+}
+
+#card-text{
+    font-size:1.5rem;
+    line-height:1.4;
+    margin-bottom:25px;
+    font-family:'Cormorant Garamond',serif;
+}
+
+#btn-close{
+    padding:10px 25px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+/* PUNTO CENTRO */
+#crosshair{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:white;
+    transform:translate(-50%,-50%);
+    z-index:40;
+}
+
+</style>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
 
 </head>
 
 <body>
 
+<div id="intro-screen">
+    <h1>DIANA ALEJANDRA</h1>
+    <button id="btn-enter">EXPLORAR</button>
+</div>
 
+<div id="crosshair"></div>
 
-    <div id="intro-screen">
+<div id="message-card">
+    <div id="card-icon">💖</div>
+    <div id="card-title">PARA TI</div>
+    <p id="card-text"></p>
+    <button id="btn-close">CERRAR</button>
+</div>
 
-        <h1>NUESTRO UNIVERSO</h1>
+<div id="canvas-container"></div>
 
-        <p id="error-msg">⚠️ Si ves esto negro y no avanza al darle Explorar, es porque abriste el archivo con doble clic. Debes usar "Live Server" o un servidor local.</p>
+<script type="module">
 
-        <button id="btn-enter">EXPLORAR</button>
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    </div>
+const frases = [
+"Mi vida 💖",
+"Mi reina 👑",
+"Mamasita 😍",
+"Cosita linda 💕",
+"Mi cielo ✨",
+"Mi bebé 🥰",
+"Princesita 🌸",
+"Bombón 💋",
+"Mi tentación ❤️",
+"Caramelito 🍬",
+"Mi debilidad 💘",
+"Mamasota 🔥",
+"Mi amor 💞",
+"Mi niña 🌷",
+"Preciosa 💫",
+"Muñequita 🦋",
+"Mi tesoro 💎",
+"Corazoncito ❤️",
+"Mi patrona 😏",
+"Mi desastre favorito 😂"
+];
 
+const container = document.getElementById('canvas-container');
 
+const scene = new THREE.Scene();
 
-    <div id="crosshair"></div>
+const camera = new THREE.PerspectiveCamera(
+55,
+window.innerWidth/window.innerHeight,
+0.1,
+1000
+);
 
+camera.position.z = 90;
 
+const renderer = new THREE.WebGLRenderer({
+antialias:true,
+alpha:true
+});
 
-    <div id="message-card">
+renderer.setSize(window.innerWidth,window.innerHeight);
 
-        <div id="card-icon">✨</div>
+container.appendChild(renderer.domElement);
 
-        <div id="card-title">Lo que me gusta de ti</div>
+const controls = new OrbitControls(camera,renderer.domElement);
+controls.enableDamping = true;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
 
-        <p id="card-text">Mensaje</p>
+const sprites = [];
 
-        <button id="btn-close">CERRAR</button>
+function createTextSprite(text){
 
-    </div>
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
 
+    const ctx = canvas.getContext('2d');
 
+    ctx.fillStyle = 'rgba(255,255,255,0)';
+    ctx.fillRect(0,0,512,512);
 
-    <div id="canvas-container"></div>
+    ctx.font = 'bold 42px Arial';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = '#ff69b4';
+    ctx.shadowBlur = 25;
 
+    ctx.fillText(text,256,256);
 
+    const texture = new THREE.CanvasTexture(canvas);
 
-    <script type="module">
+    const material = new THREE.SpriteMaterial({
+        map:texture,
+        transparent:true
+    });
 
-        import * as THREE from 'three';
+    const sprite = new THREE.Sprite(material);
 
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    sprite.scale.set(20,20,1);
 
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    return sprite;
+}
 
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+frases.forEach((frase,i)=>{
 
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    const sprite = createTextSprite(frase);
 
+    const angle = (i/frases.length)*Math.PI*2;
 
+    const radius = 40 + Math.random()*25;
 
-        // Evitar que el mensaje de error aparezca si el script carga bien
+    sprite.position.set(
+        Math.cos(angle)*radius,
+        (Math.random()-0.5)*40,
+        Math.sin(angle)*radius
+    );
 
-        document.getElementById('error-msg').style.display = 'none';
+    sprite.userData = {
+        angle:angle,
+        radius:radius
+    };
 
+    scene.add(sprite);
 
+    sprites.push(sprite);
 
-        // ==========================================
+});
 
-        // ⚙️ BASE DE DATOS EMOCIONAL (80 ELEMENTOS)
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
-        // ==========================================
+window.addEventListener('mousemove',(event)=>{
 
-        const emojisPosibles = ['❤️', '💕', '💖', '💗', '💓', '💞', '✨', '🌹', '🌸', '🫶', '💫', '♡', '🦋', '🌷', '🌟', '💌'];
+    mouse.x = (event.clientX/window.innerWidth)*2 -1;
+    mouse.y = -(event.clientY/window.innerHeight)*2 +1;
 
-        const paletaColores = ['#ffb3c6', '#ff809f', '#ffd1dc', '#ffffff', '#ff99b3'];
+});
 
+window.addEventListener('click',()=>{
 
+    raycaster.setFromCamera(mouse,camera);
 
-        const frases = [
+    const intersects = raycaster.intersectObjects(sprites);
 
-            "Tu sonrisa", "Tu mirada profunda", "Tu risa contagiosa", "La calidez de tu voz", "Tu inteligencia brillante", 
+    if(intersects.length > 0){
 
-            "Tu sentido del humor único", "Tus abrazos que curan todo", "La paz infinita que me das", "Tu bondad desinteresada", "Tu locura divertida",
+        const texto = intersects[0].object.material.map.image
+        ? "Eres la persona más hermosa de mi universo ❤️"
+        : "";
 
-            "Tu forma única de ver el mundo", "La pasión que le pones a todo", "Tu gran empatía", "Tu creatividad sin límites", "Tu fuerza inquebrantable", 
+        document.getElementById('card-text').innerText = texto;
 
-            "Tu ternura al hablarme", "Tu paciencia conmigo", "El apoyo incondicional que me brindas", "La luz que irradias", "Tu energía positiva",
+        document.getElementById('message-card')
+        .classList.add('active');
+    }
 
-            "La suavidad de tus manos", "Tus caricias inesperadas", "Tu aroma que me encanta", "Tu forma de caminar", "Cómo me escuchas con atención", 
+});
 
-            "Cómo me hablas al oído", "Cómo me haces sentir único", "Tu maravillosa compañía", "Tus silencios cómodos", "Tu respiración cuando duermes",
+document.getElementById('btn-close')
+.addEventListener('click',()=>{
 
-            "Tus pequeños detalles", "Tus hermosas sorpresas", "Tu forma tan pura de amar", "Tu sinceridad total", "Tu honestidad valiente", 
+    document.getElementById('message-card')
+    .classList.remove('active');
 
-            "Tu lealtad absoluta", "La confianza que me inspiras", "Tu valentía ante los retos", "Tu inmensa determinación", "Tu perseverancia",
+});
 
-            "Tu optimismo contagiante", "Tu esperanza en el futuro", "Tu fe en nosotros", "Tu alegría de vivir", "Tu entusiasmo por lo simple", 
+document.getElementById('btn-enter')
+.addEventListener('click',()=>{
 
-            "Tu curiosidad de niño/a", "Tu increíble imaginación", "Tu maravillosa espontaneidad", "Tu autenticidad", "Tu hermosa originalidad",
+    document.getElementById('intro-screen')
+    .style.display='none';
 
-            "Tus grandes metas", "Tus sueños más locos", "Tu forma de soñar despierto/a", "Tu forma de luchar por lo que quieres", "Tu resiliencia", 
+});
 
-            "Tu capacidad de perdonar", "Tu capacidad de aprender siempre", "Tu gran sabiduría", "Tu intuición perfecta", "Tu hermosa sensibilidad",
+function animate(){
 
-            "Cómo te emocionas por pequeñas cosas", "Tus gestos tan tuyos", "Tus divertidas manías", "Ese lunar que tanto me gusta", "Tu cabello", 
+    requestAnimationFrame(animate);
 
-            "Tu perfil perfecto", "Tu carita al dormir", "Tu forma de despertar", "Tu carita cuando comes algo rico", "Tu forma de bailar sin pena",
+    sprites.forEach((sprite)=>{
 
-            "Tus mensajes de buenos días", "Tus llamadas inesperadas", "Tus sabios consejos", "Tu forma de cuidarme", "Tu forma de protegerme", 
+        sprite.userData.angle += 0.002;
 
-            "Tu forma de animarme cuando caigo", "Tu forma de consolarme", "Tu facilidad para hacerme reír", "Tu capacidad de hacerme pensar", "Que seas exactamente tú"
+        sprite.position.x =
+        Math.cos(sprite.userData.angle)
+        * sprite.userData.radius;
 
-        ];
+        sprite.position.z =
+        Math.sin(sprite.userData.angle)
+        * sprite.userData.radius;
 
+    });
 
+    controls.update();
 
-        const interactiveData = frases.map((frase, i) => {
+    renderer.render(scene,camera);
+}
 
-            return {
+animate();
 
-                id: i,
+window.addEventListener('resize',()=>{
 
-                emoji: emojisPosibles[Math.floor(Math.random() * emojisPosibles.length)],
+    camera.aspect = window.innerWidth/window.innerHeight;
 
-                color: paletaColores[Math.floor(Math.random() * paletaColores.length)],
+    camera.updateProjectionMatrix();
 
-                title: frase,
+    renderer.setSize(window.innerWidth,window.innerHeight);
 
-                card: "Eres la pieza que le faltaba a mi universo. " + frase + " es algo que atesoro profundamente." 
+});
 
-            };
+</script>
 
-        });
-
-
-
-        // Configuración de la escena
-
-        const container = document.getElementById('canvas-container');
-
-        const scene = new THREE.Scene();
-
-        scene.fog = new THREE.FogExp2(0x030102, 0.002);
-
-
-
-        const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
-
-        camera.position.set(0, 40, 120);
-
-
-
-        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-
-        renderer.toneMappingExposure = 1.2;
-
-        container.appendChild(renderer.domElement);
-
-
-
-        const controls = new OrbitControls(camera, renderer.domElement);
-
-        controls.enableDamping = true; controls.dampingFactor = 0.03;
-
-        controls.autoRotate = true; controls.autoRotateSpeed = 0.2;
-
-        controls.maxDistance = 350; controls.minDistance = 25;
-
-
-
-        // Post-processing Cinematico
-
-        const renderScene = new RenderPass(scene, camera);
-
-        const bloomPass = new UnrealBloomPass(
-
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
-
-            2.0, 0.8, 0.1 // Intensidad moderada para no cegar los emojis
-
-        );
-
-        const composer = new EffectComposer(renderer);
-
-        composer.addPass(renderScene); composer.addPass(bloomPass);
-
-
-
-        // Agujero Negro y Halo
-
-        const bhGeometry = new THREE.SphereGeometry(12, 64, 64);
-
-        const bhMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-
-        const blackHole = new THREE.Mesh(bhGeometry, bhMaterial);
-
-        scene.add(blackHole);
-
-
-
-        // Disco de Acreción (GLSL)
-
-        const diskGeometry = new THREE.PlaneGeometry(100, 100, 128, 128);
-
-        const diskShaderMaterial = new THREE.ShaderMaterial({
-
-            uniforms: { time: { value: 0.0 }, color1: { value: new THREE.Color(0xffd1dc) }, color2: { value: new THREE.Color(0xff5522) } },
-
-            vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
-
-            fragmentShader: `
-
-                uniform float time; uniform vec3 color1; uniform vec3 color2; varying vec2 vUv;
-
-                float rand(vec2 co){ return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453); }
-
-                void main() {
-
-                    vec2 p = -1.0 + 2.0 * vUv; float r = length(p); float a = atan(p.y, p.x);
-
-                    if(r < 0.25) discard;
-
-                    float f = sin(r * 30.0 - time * 2.0 + a * 4.0) + sin(r * 50.0 - time * 4.0 + a * 8.0) * 0.5;
-
-                    vec3 col = mix(color2, color1, f * 0.5 + 0.5);
-
-                    float glow = 0.08 / (r - 0.2); float edgeFade = smoothstep(1.0, 0.3, r);
-
-                    float alpha = edgeFade * glow * (f * 0.5 + 0.8) + (rand(p * time * 0.001) * 0.1);
-
-                    gl_FragColor = vec4(col * alpha * 1.5, alpha);
-
-                }
-
-            `,
-
-            transparent: true, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false
-
-        });
-
-        const accretionDisk = new THREE.Mesh(diskGeometry, diskShaderMaterial);
-
-        accretionDisk.rotation.x = Math.PI / 2.1; 
-
-        scene.add(accretionDisk);
-
-
-
-        // Estrellas de fondo
-
-        const starGeo = new THREE.BufferGeometry(); const starPos = new Float32Array(15000 * 3);
-
-        for(let i = 0; i < 15000; i++) {
-
-            const r = 25 + Math.pow(Math.random(), 2) * 250; const theta = Math.random() * 2 * Math.PI; const phi = Math.acos((Math.random() * 2 - 1) * 0.1); 
-
-            starPos[i*3] = r * Math.sin(phi) * Math.cos(theta); starPos[i*3+1] = r * Math.cos(phi) * (Math.random() * 0.6); starPos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
-
-        }
-
-        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-
-        const starMat = new THREE.PointsMaterial({ size: 0.6, color: 0xffe6ea, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
-
-        const stars = new THREE.Points(starGeo, starMat); scene.add(stars);
-
-
-
-        // ==========================================
-
-        // 💖 CONVERTIR EMOJIS EN HOLOGRAMAS LEGIBLES (NUEVO MÉTODO)
-
-        // ==========================================
-
-        const interactiveSprites = [];
-
-
-
-        function createEmojiHologramSprite(emojiText, colorHex) {
-
-            // Alta resolución para evitar pixelado
-
-            const canvas = document.createElement('canvas');
-
-            canvas.width = 512; canvas.height = 512;
-
-            const ctx = canvas.getContext('2d');
-
-
-
-            // 1. Dibujar un "aura" holográfica brillante por detrás
-
-            const gradient = ctx.createRadialGradient(256, 256, 30, 256, 256, 220);
-
-            gradient.addColorStop(0, colorHex); // Color sólido al centro
-
-            gradient.addColorStop(0.5, colorHex + '66'); // Semi transparente
-
-            gradient.addColorStop(1, 'rgba(0,0,0,0)'); // Borde invisible
-
-            ctx.fillStyle = gradient;
-
-            ctx.fillRect(0, 0, 512, 512);
-
-
-
-            // 2. Dibujar el Emoji en el centro para que se vea perfectamente
-
-            ctx.font = '160px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
-
-            ctx.textAlign = 'center';
-
-            ctx.textBaseline = 'middle';
-
-            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)'; // Pequeña sombra para dar relieve
-
-            ctx.shadowBlur = 20;
-
-            
-
-            // Llenado (aunque es un emoji, algunos navegadores necesitan esto)
-
-            ctx.fillStyle = '#ffffff'; 
-
-            ctx.fillText(emojiText, 256, 275); 
-
-
-
-            // Crear Textura
-
-            const texture = new THREE.CanvasTexture(canvas);
-
-            texture.colorSpace = THREE.SRGBColorSpace; // CRÍTICO: Mantiene los colores vivos
-
-            
-
-            // Usar NormalBlending para que el Emoji no pierda sus colores originales
-
-            const material = new THREE.SpriteMaterial({ 
-
-                map: texture, 
-
-                transparent: true, 
-
-                blending: THREE.NormalBlending, 
-
-                depthWrite: false
-
-            });
-
-
-
-            const sprite = new THREE.Sprite(material);
-
-            sprite.scale.set(16, 16, 1); 
-
-            return sprite;
-
-        }
-
-
-
-        // Crear los 80 emojis en el espacio
-
-        interactiveData.forEach((data, index) => {
-
-            const sprite = createEmojiHologramSprite(data.emoji, data.color);
-
-            
-
-            const angle = (index / interactiveData.length) * Math.PI * 4 + Math.random(); 
-
-            const distance = 40 + (Math.random() * 100); 
-
-            const height = (Math.random() - 0.5) * 60;
-
-            
-
-            sprite.position.set(Math.cos(angle) * distance, height, Math.sin(angle) * distance);
-
-
-
-            sprite.userData = {
-
-                data: data, angle: angle, distance: distance, baseY: height,
-
-                speed: 0.001 + Math.random() * 0.002, bobSpeed: 1 + Math.random() * 2, originalScale: 16
-
-            };
-
-
-
-            scene.add(sprite);
-
-            interactiveSprites.push(sprite);
-
-        });
-
-
-
-        // Interacción (Clics y Raycaster)
-
-        const raycaster = new THREE.Raycaster();
-
-        const mouse = new THREE.Vector2();
-
-        const crosshair = document.getElementById('crosshair');
-
-        const cardModal = document.getElementById('message-card');
-
-        
-
-        window.addEventListener('mousemove', (event) => {
-
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        });
-
-
-
-        window.addEventListener('click', () => {
-
-            if (cardModal.classList.contains('active')) return;
-
-            raycaster.setFromCamera(mouse, camera);
-
-            const intersects = raycaster.intersectObjects(interactiveSprites);
-
-
-
-            if (intersects.length > 0) {
-
-                const sprite = intersects[0].object;
-
-                const data = sprite.userData.data;
-
-                
-
-                // Efecto de "latido" al hacer clic
-
-                sprite.scale.set(24, 24, 1);
-
-                setTimeout(() => sprite.scale.set(16, 16, 1), 300);
-
-
-
-                // Mostrar tarjeta
-
-                document.getElementById('card-icon').innerText = data.emoji;
-
-                document.getElementById('card-icon').style.textShadow = `0 0 20px ${data.color}`;
-
-                document.getElementById('card-title').innerText = data.title;
-
-                document.getElementById('card-text').innerText = data.card;
-
-                cardModal.classList.add('active');
-
-            }
-
-        });
-
-
-
-        document.getElementById('btn-close').addEventListener('click', () => cardModal.classList.remove('active'));
-
-
-
-        const clock = new THREE.Clock();
-
-
-
-        function animate() {
-
-            requestAnimationFrame(animate);
-
-            const elapsedTime = clock.getElapsedTime();
-
-
-
-            controls.update();
-
-            diskShaderMaterial.uniforms.time.value = elapsedTime;
-
-            stars.rotation.y = elapsedTime * 0.005;
-
-
-
-            // Animar Sprites
-
-            interactiveSprites.forEach((sprite) => {
-
-                const ud = sprite.userData;
-
-                ud.angle += ud.speed;
-
-                sprite.position.x = Math.cos(ud.angle) * ud.distance;
-
-                sprite.position.z = Math.sin(ud.angle) * ud.distance;
-
-                sprite.position.y = ud.baseY + Math.sin(elapsedTime * ud.bobSpeed + ud.angle) * 3
+</body>
+</html>
