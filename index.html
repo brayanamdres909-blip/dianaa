@@ -23,8 +23,9 @@ body{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    z-index:10;
     text-align:center;
+    z-index:10;
+
     background-image:url("diana.jpg");
     background-size:cover;
     background-position:center;
@@ -39,16 +40,8 @@ body{
     z-index:-1;
 }
 
-#intro h1{
-    font-size:42px;
-    color:#ff9bb3;
-}
-
-#intro p{
-    max-width:320px;
-    color:#eee;
-    margin:15px;
-}
+#intro h1{ font-size:42px; color:#ff9bb3; }
+#intro p{ max-width:320px; color:#eee; margin:15px; }
 
 #intro button{
     padding:12px 25px;
@@ -72,11 +65,10 @@ body{
     display:none;
     max-width:320px;
     border:1px solid #ff9bb3;
+    z-index:5;
 }
 
-#card h2{
-    color:#ff9bb3;
-}
+#card h2{ color:#ff9bb3; }
 
 #card button{
     margin-top:10px;
@@ -87,10 +79,7 @@ body{
     cursor:pointer;
 }
 
-/* canvas */
-canvas{
-    display:block;
-}
+canvas{ display:block; }
 </style>
 
 <script type="importmap">
@@ -106,8 +95,8 @@ canvas{
 
 <div id="intro">
 <h1>Diana Alejandra 💖</h1>
-<p>La más hermosa… la más preciosa… mi universo completo.</p>
-<button id="btnStart">Entrar</button>
+<p>La más hermosa, la más preciosa… mi universo completo.</p>
+<button id="btnStart">Entrar a nuestro universo</button>
 </div>
 
 <div id="card">
@@ -119,28 +108,23 @@ canvas{
 <script type="module">
 import * as THREE from 'three';
 
-/* 💖 FRASES MEJORADAS (NO REPETIDAS) */
 const frases = [
 "Tus ojos verdes que me calman",
-"La forma en que sonríes sin darte cuenta",
-"Tu voz cuando dices mi nombre",
-"Tu forma de abrazarme fuerte",
-"La paz que siento contigo",
-"Tu forma de hacerme reír",
-"Tu mirada cuando te pierdes en mí",
-"Lo hermosa que eres sin esfuerzo",
-"Tu forma de cuidar a los demás",
-"Tu manera de ser tan tú",
-"Cómo haces especial lo simple",
-"Tu forma de querer de verdad",
-"Lo que siento cuando estás cerca",
-"Tu energía que me tranquiliza",
-"Tu forma de existir en mi vida",
-"Todo lo que eres sin intentar ser perfecta",
-"Que seas tú, Diana Alejandra"
+"Tu sonrisa que ilumina todo",
+"Tu voz en mi mente",
+"Tu forma de abrazarme",
+"Lo hermosa que eres",
+"Tu esencia única",
+"Tu forma de ser",
+"Tú, simplemente tú",
+"Todo lo que eres",
+"Mi lugar favorito eres tú"
 ];
 
 let scene, camera, renderer, objects = [];
+
+/* 🎵 MÚSICA */
+let musicFrame = null;
 
 document.getElementById("btnStart").addEventListener("click", start);
 document.getElementById("btnClose").addEventListener("click", closeCard);
@@ -149,6 +133,17 @@ function start(){
 
     document.getElementById("intro").style.display = "none";
 
+    /* ===== MÚSICA YOUTUBE ===== */
+    musicFrame = document.createElement("iframe");
+    musicFrame.src = "https://www.youtube.com/embed/F0rwOsAteXM?autoplay=1&loop=1&playlist=F0rwOsAteXM&controls=0";
+    musicFrame.allow = "autoplay";
+    musicFrame.style.position = "absolute";
+    musicFrame.style.width = "1px";
+    musicFrame.style.height = "1px";
+    musicFrame.style.left = "-9999px";
+    document.body.appendChild(musicFrame);
+
+    /* ===== ESCENA ===== */
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(
@@ -205,7 +200,7 @@ window.addEventListener("click",(e)=>{
         document.getElementById("title").innerText = obj.userData.text;
 
         document.getElementById("text").innerText =
-        "Diana Alejandra… eres la persona que cambió mi forma de ver todo. No eres solo especial, eres irrepetible para mí.";
+        "Diana Alejandra… eres mi lugar favorito en el mundo. Todo contigo se siente perfecto.";
 
         document.getElementById("card").style.display = "block";
     }
