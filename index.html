@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diana Alejandra ❤️</title>
+<title> Alejandra ❤️</title>
 
 <style>
 body{
@@ -14,7 +14,7 @@ body{
     color:white;
 }
 
-/* INTRO */
+/* ===== INTRO ===== */
 #intro{
     position:absolute;
     width:100%;
@@ -40,8 +40,16 @@ body{
     z-index:-1;
 }
 
-#intro h1{ font-size:42px; color:#ff9bb3; }
-#intro p{ max-width:320px; color:#eee; margin:15px; }
+#intro h1{
+    font-size:42px;
+    color:#ff9bb3;
+}
+
+#intro p{
+    max-width:320px;
+    color:#eee;
+    margin:15px;
+}
 
 #intro button{
     padding:12px 25px;
@@ -52,7 +60,7 @@ body{
     border-radius:20px;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 #card{
     position:absolute;
     top:50%;
@@ -68,7 +76,9 @@ body{
     z-index:5;
 }
 
-#card h2{ color:#ff9bb3; }
+#card h2{
+    color:#ff9bb3;
+}
 
 #card button{
     margin-top:10px;
@@ -79,7 +89,10 @@ body{
     cursor:pointer;
 }
 
-canvas{ display:block; }
+/* canvas */
+canvas{
+    display:block;
+}
 </style>
 
 <script type="importmap">
@@ -94,9 +107,9 @@ canvas{ display:block; }
 <body>
 
 <div id="intro">
-<h1> Alejandra 💖</h1>
-<p>La más hermosa, la más preciosa… mi universo completo.</p>
-<button id="btnStart">Entrar a nuestro universo</button>
+<h1>Diana Alejandra 💖</h1>
+<p>La más hermosa, la más preciosa… la más preciosa, mi universo completo.</p>
+<button id="btnStart">Entrar</button>
 </div>
 
 <div id="card">
@@ -110,10 +123,10 @@ import * as THREE from 'three';
 
 const frases = [
 "Tus ojos verdes que me calman",
-"Tu sonrisa que ilumina todo",
-"Tu voz en mi mente",
+"Tu sonrisa que me ilumina",
+"Tu voz que me tranquiliza",
 "Tu forma de abrazarme",
-"Lo hermosa que eres",
+"Lo hermosa que eres sin esfuerzo",
 "Tu esencia única",
 "Tu forma de ser",
 "Tú, simplemente tú",
@@ -123,9 +136,6 @@ const frases = [
 
 let scene, camera, renderer, objects = [];
 
-/* 🎵 MÚSICA */
-let musicFrame = null;
-
 document.getElementById("btnStart").addEventListener("click", start);
 document.getElementById("btnClose").addEventListener("click", closeCard);
 
@@ -133,17 +143,6 @@ function start(){
 
     document.getElementById("intro").style.display = "none";
 
-    /* ===== MÚSICA YOUTUBE ===== */
-    musicFrame = document.createElement("iframe");
-    musicFrame.src = "https://www.youtube.com/embed/F0rwOsAteXM?autoplay=1&loop=1&playlist=F0rwOsAteXM&controls=0";
-    musicFrame.allow = "autoplay";
-    musicFrame.style.position = "absolute";
-    musicFrame.style.width = "1px";
-    musicFrame.style.height = "1px";
-    musicFrame.style.left = "-9999px";
-    document.body.appendChild(musicFrame);
-
-    /* ===== ESCENA ===== */
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(
@@ -159,26 +158,31 @@ function start(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(1.2,32,32);
+    /* ✨ DESTELLOS MEJORADOS */
+    const geometry = new THREE.SphereGeometry(0.6, 8, 8);
 
-    frases.forEach((f)=>{
+    for(let i=0;i<80;i++){
 
-        const material = new THREE.MeshBasicMaterial({color:0xff6f91});
+        const material = new THREE.MeshBasicMaterial({
+            color: new THREE.Color().setHSL(Math.random(), 1, 0.7),
+            transparent: true,
+            opacity: 0.9
+        });
+
         const sphere = new THREE.Mesh(geometry, material);
 
         sphere.position.x = (Math.random()-0.5)*120;
         sphere.position.y = (Math.random()-0.5)*80;
         sphere.position.z = (Math.random()-0.5)*120;
 
-        sphere.userData.text = f;
-
         scene.add(sphere);
         objects.push(sphere);
-    });
+    }
 
     animate();
 }
 
+/* 💖 CLICK */
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -197,11 +201,29 @@ window.addEventListener("click",(e)=>{
 
         const obj = hits[0].object;
 
-        document.getElementById("title").innerText = obj.userData.text;
+        document.getElementById("title").innerText = obj.userData?.text || "Diana Alejandra";
 
         document.getElementById("text").innerText =
-        "Mi vida, eres mi lugar favorito en el mundo. Todo contigo se siente perfecto.";
+`Diana Alejandra…
 
+Eres mi lugar favorito en el universo.
+Contigo, hasta el silencio se siente bonito.
+
+Todo contigo se siente perfecto,
+como si el mundo finalmente encajara cuando estás cerca.
+
+No necesito más mapas si tú eres mi destino. 💖
+
+Tu presencia convierte lo simple en algo mágico,
+y lo cotidiano en algo que quiero repetir mil veces.
+
+Si el mundo se apaga, tú eres la luz que me queda. ✨
+
+Contigo aprendí que “hogar” no es un lugar,
+sino la forma en que me haces sentir.
+
+Eres ese pensamiento que no se va,
+y que honestamente… no quiero que se vaya nunca.
         document.getElementById("card").style.display = "block";
     }
 });
@@ -210,12 +232,14 @@ function closeCard(){
     document.getElementById("card").style.display = "none";
 }
 
+/* ✨ ANIMACIÓN */
 function animate(){
     requestAnimationFrame(animate);
 
     objects.forEach(o=>{
-        o.rotation.y += 0.01;
-        o.rotation.x += 0.004;
+        const s = 1 + Math.sin(Date.now() * 0.002 + o.position.x) * 0.3;
+        o.scale.set(s, s, s);
+        o.rotation.y += 0.002;
     });
 
     renderer.render(scene,camera);
