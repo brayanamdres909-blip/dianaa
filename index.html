@@ -25,6 +25,7 @@ body{
     align-items:center;
     background:black;
     z-index:10;
+    text-align:center;
 }
 
 #intro h1{
@@ -37,8 +38,7 @@ body{
     margin:20px;
     font-size:14px;
     color:#ccc;
-    text-align:center;
-    max-width:300px;
+    max-width:320px;
 }
 
 #intro button{
@@ -56,8 +56,8 @@ body{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    background:rgba(0,0,0,0.85);
-    padding:30px;
+    background:rgba(0,0,0,0.88);
+    padding:25px;
     border-radius:20px;
     text-align:center;
     display:none;
@@ -67,6 +67,7 @@ body{
 
 #card h2{
     color:#ff9bb3;
+    margin-bottom:10px;
 }
 
 #card button{
@@ -78,7 +79,7 @@ body{
     cursor:pointer;
 }
 
-/* CURSOR */
+/* canvas */
 canvas{
     display:block;
 }
@@ -97,65 +98,67 @@ canvas{
 
 <div id="intro">
 <h1>DIANA ALEJANDRA</h1>
-<p>5 meses contigo… y todavía siento mariposas cada vez que te veo.</p>
-<button onclick="start()">Entrar a nuestro universo</button>
+<p>La más hermosa, la más preciosa… y la razón de este universo.</p>
+<button id="startBtn">Entrar a nuestro universo</button>
 </div>
 
 <div id="card">
 <h2 id="title"></h2>
 <p id="text"></p>
-<button onclick="closeCard()">Cerrar</button>
+<button id="closeBtn">Cerrar</button>
 </div>
 
 <script type="module">
 import * as THREE from 'three';
 
 const frases = [
-"Tus ojos verdes que me pierden",
-"Tu sonrisa que me desarma",
-"La forma en que dices mi nombre",
-"Tu mirada cuando me ves",
-"Lo hermosa que eres sin darte cuenta",
-"Tu forma de abrazarme",
-"Tu voz cuando me hablas suave",
-"Nuestros 5 meses juntos",
-"La conexión que tenemos",
-"Tu forma de hacerme feliz",
+"Tus ojos verdes",
+"Tu sonrisa",
+"Tu forma de mirarme",
+"Tu voz",
+"Tu forma de ser",
+"Lo hermosa que eres",
 "Tu esencia",
-"Tu alma",
 "Tus besos",
-"Tus abrazos",
 "Tu presencia",
-"Lo que siento por ti",
 "Todo lo que eres",
-"Que seas tú… Diana Alejandra"
+"Que seas tú, Diana Alejandra"
 ];
 
-let scene, camera, renderer, objects=[];
+let scene, camera, renderer, objects = [];
+
+document.getElementById("startBtn").addEventListener("click", start);
+document.getElementById("closeBtn").addEventListener("click", closeCard);
 
 function start(){
-    document.getElementById("intro").style.display="none";
+    document.getElementById("intro").style.display = "none";
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000);
-    camera.position.z=60;
+    camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+    );
+
+    camera.position.z = 60;
 
     renderer = new THREE.WebGLRenderer({antialias:true});
-    renderer.setSize(innerWidth,innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(1.2,32,32);
+    const geometry = new THREE.SphereGeometry(1.2, 32, 32);
 
     frases.forEach((f)=>{
         const material = new THREE.MeshBasicMaterial({color:0xff6f91});
-        const sphere = new THREE.Mesh(geometry,material);
+        const sphere = new THREE.Mesh(geometry, material);
 
-        sphere.position.x=(Math.random()-0.5)*120;
-        sphere.position.y=(Math.random()-0.5)*80;
-        sphere.position.z=(Math.random()-0.5)*120;
+        sphere.position.x = (Math.random()-0.5)*120;
+        sphere.position.y = (Math.random()-0.5)*80;
+        sphere.position.z = (Math.random()-0.5)*120;
 
-        sphere.userData.text=f;
+        sphere.userData.text = f;
 
         scene.add(sphere);
         objects.push(sphere);
@@ -164,47 +167,51 @@ function start(){
     animate();
 }
 
-const raycaster=new THREE.Raycaster();
-const mouse=new THREE.Vector2();
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
 window.addEventListener("click",(e)=>{
-    mouse.x=(e.clientX/window.innerWidth)*2-1;
-    mouse.y=-(e.clientY/window.innerHeight)*2+1;
 
-    raycaster.setFromCamera(mouse,camera);
-    const intersects=raycaster.intersectObjects(objects);
+    if(!camera) return;
 
-    if(intersects.length>0){
-        const obj=intersects[0].object;
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-        document.getElementById("title").innerText=obj.userData.text;
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(objects);
 
-        document.getElementById("text").innerText=
-        "Diana Alejandra… no es solo esto. Eres la razón por la que todo tiene sentido para mí. Estos 5 meses contigo han sido únicos y no los cambiaría por nada.";
+    if(hits.length > 0){
+        const obj = hits[0].object;
 
-        document.getElementById("card").style.display="block";
+        document.getElementById("title").innerText = obj.userData.text;
+
+        document.getElementById("text").innerText =
+        "Diana Alejandra… la más hermosa, la más preciosa. No eres solo alguien especial, eres quien le dio sentido a todo en mi vida.";
+
+        document.getElementById("card").style.display = "block";
     }
 });
 
 function closeCard(){
-    document.getElementById("card").style.display="none";
+    document.getElementById("card").style.display = "none";
 }
 
 function animate(){
     requestAnimationFrame(animate);
 
     objects.forEach(o=>{
-        o.rotation.y+=0.008;
-        o.rotation.x+=0.004;
+        o.rotation.y += 0.008;
+        o.rotation.x += 0.004;
     });
 
-    renderer.render(scene,camera);
+    renderer.render(scene, camera);
 }
 
-window.addEventListener("resize",()=>{
-    camera.aspect=innerWidth/innerHeight;
+window.addEventListener("resize", ()=>{
+    if(!camera) return;
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth,innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 });
 </script>
 
