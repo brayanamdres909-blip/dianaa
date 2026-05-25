@@ -22,14 +22,14 @@ body{
     font-family:'Montserrat',sans-serif;
 }
 
-/* FONDO */
 #canvas-container{
     position:absolute;
     width:100%;
     height:100%;
+    z-index:1;
 }
 
-/* PANTALLA INICIO */
+/* INTRO */
 #intro-screen{
     position:absolute;
     top:0;
@@ -96,12 +96,12 @@ body{
     transform:translate(-50%,-50%);
     width:85%;
     max-width:420px;
-    background:rgba(20,20,20,0.75);
+    background:rgba(20,20,20,0.8);
     backdrop-filter:blur(15px);
     border-radius:25px;
     padding:35px;
     text-align:center;
-    z-index:30;
+    z-index:50;
     opacity:0;
     pointer-events:none;
     transition:0.5s;
@@ -126,7 +126,7 @@ body{
 
 #card-text{
     color:white;
-    font-size:1.5rem;
+    font-size:1.6rem;
     line-height:1.4;
     font-family:'Cormorant Garamond',serif;
     margin-bottom:25px;
@@ -137,6 +137,7 @@ body{
     border:none;
     border-radius:30px;
     cursor:pointer;
+    background:white;
 }
 
 </style>
@@ -174,22 +175,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const frases = [
-"Mi vida 💖",
-"Mi reina 👑",
-"Mamasita 😍",
-"Cosita linda 💕",
-"Mi cielo ✨",
-"Mi bebé 🥰",
-"Princesita 🌸",
-"Bombón 💋",
-"Mi tentación ❤️",
-"Caramelito 🍬",
-"Mi debilidad 💘",
-"Mamasota 🔥",
-"Mi amor 💞",
-"Mi niña 🌷",
-"Preciosa 💫",
-"Muñequita 🦋"
+"Mi vida 💖","Mi reina 👑","Mamasita 😍","Cosita linda 💕",
+"Mi cielo ✨","Mi bebé 🥰","Princesita 🌸","Bombón 💋",
+"Mi tentación ❤️","Caramelito 🍬","Mi debilidad 💘","Mamasota 🔥",
+"Mi amor 💞","Mi niña 🌷","Preciosa 💫","Muñequita 🦋"
 ];
 
 const mensajes = [
@@ -198,7 +187,6 @@ const mensajes = [
 "No cambio tus abrazos por nada 💖",
 "Eres mi lugar favorito 🌸",
 "Cada día contigo es especial 💕",
-"Mi vida tiene más sentido contigo 💫",
 "Siempre voy a elegirte ❤️"
 ];
 
@@ -215,209 +203,137 @@ window.innerWidth/window.innerHeight,
 
 camera.position.z = 90;
 
-const renderer = new THREE.WebGLRenderer({
-antialias:true,
-alpha:true
-});
-
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
 renderer.setSize(window.innerWidth,window.innerHeight);
-
 container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera,renderer.domElement);
-
 controls.enableDamping = true;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.5;
 
 /* ESTRELLAS */
-
-const starsGeometry = new THREE.BufferGeometry();
-
-const starVertices = [];
+const geo = new THREE.BufferGeometry();
+const points = [];
 
 for(let i=0;i<3000;i++){
-
-    const x = (Math.random()-0.5)*2000;
-    const y = (Math.random()-0.5)*2000;
-    const z = (Math.random()-0.5)*2000;
-
-    starVertices.push(x,y,z);
+    points.push(
+        (Math.random()-0.5)*2000,
+        (Math.random()-0.5)*2000,
+        (Math.random()-0.5)*2000
+    );
 }
 
-starsGeometry.setAttribute(
-'position',
-new THREE.Float32BufferAttribute(starVertices,3)
-);
+geo.setAttribute("position", new THREE.Float32BufferAttribute(points,3));
 
-const starsMaterial = new THREE.PointsMaterial({
-color:0xffffff,
-size:1
-});
+const mat = new THREE.PointsMaterial({ color:0xffffff, size:1 });
 
-const stars = new THREE.Points(
-starsGeometry,
-starsMaterial
-);
-
+const stars = new THREE.Points(geo,mat);
 scene.add(stars);
 
-/* TEXTOS */
-
+/* SPRITES */
 const sprites = [];
 
-function createTextSprite(text){
+function makeSprite(text){
 
-    const canvas = document.createElement('canvas');
+    const c = document.createElement("canvas");
+    c.width = 512;
+    c.height = 512;
 
-    canvas.width = 512;
-    canvas.height = 512;
+    const ctx = c.getContext("2d");
 
-    const ctx = canvas.getContext('2d');
-
-    ctx.font = 'bold 42px Arial';
-
-    ctx.fillStyle = 'white';
-
-    ctx.textAlign = 'center';
-
-    ctx.shadowColor = '#ff69b4';
+    ctx.font = "bold 42px Arial";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.shadowColor = "#ff69b4";
     ctx.shadowBlur = 25;
 
     ctx.fillText(text,256,256);
 
-    const texture = new THREE.CanvasTexture(canvas);
+    const tex = new THREE.CanvasTexture(c);
 
-    const material = new THREE.SpriteMaterial({
-        map:texture,
-        transparent:true
-    });
+    const mat = new THREE.SpriteMaterial({ map:tex, transparent:true });
 
-    const sprite = new THREE.Sprite(material);
+    const s = new THREE.Sprite(mat);
+    s.scale.set(20,20,1);
 
-    sprite.scale.set(20,20,1);
-
-    return sprite;
+    return s;
 }
 
-frases.forEach((frase,i)=>{
+frases.forEach((f,i)=>{
 
-    const sprite = createTextSprite(frase);
+    const s = makeSprite(f);
 
     const angle = (i/frases.length)*Math.PI*2;
+    const r = 40 + Math.random()*25;
 
-    const radius = 40 + Math.random()*20;
-
-    sprite.position.set(
-        Math.cos(angle)*radius,
+    s.position.set(
+        Math.cos(angle)*r,
         (Math.random()-0.5)*40,
-        Math.sin(angle)*radius
+        Math.sin(angle)*r
     );
 
-    sprite.userData = {
-        angle:angle,
-        radius:radius
-    };
+    s.userData = { angle, r };
 
-    scene.add(sprite);
-
-    sprites.push(sprite);
-
+    scene.add(s);
+    sprites.push(s);
 });
 
-/* INTERACCION */
-
+/* CLICK */
 const raycaster = new THREE.Raycaster();
-
 const mouse = new THREE.Vector2();
 
-window.addEventListener('mousemove',(event)=>{
-
-    mouse.x = (event.clientX/window.innerWidth)*2 -1;
-    mouse.y = -(event.clientY/window.innerHeight)*2 +1;
-
+window.addEventListener("mousemove",(e)=>{
+    mouse.x = (e.clientX/window.innerWidth)*2-1;
+    mouse.y = -(e.clientY/window.innerHeight)*2+1;
 });
 
-window.addEventListener('click',()=>{
+window.addEventListener("click",()=>{
 
     raycaster.setFromCamera(mouse,camera);
 
-    const intersects = raycaster.intersectObjects(sprites);
+    const hit = raycaster.intersectObjects(sprites);
 
-    if(intersects.length > 0){
+    if(hit.length>0){
 
-        const randomMessage =
-        mensajes[Math.floor(Math.random()*mensajes.length)];
+        const msg = mensajes[Math.floor(Math.random()*mensajes.length)];
 
-        document.getElementById('card-text').innerText =
-        randomMessage;
-
-        document.getElementById('message-card')
-        .classList.add('active');
+        document.getElementById("card-text").innerText = msg;
+        document.getElementById("message-card").classList.add("active");
     }
-
 });
 
-document.getElementById('btn-close')
-.addEventListener('click',()=>{
+/* BOTONES */
+document.getElementById("btn-close").onclick = () => {
+    document.getElementById("message-card").classList.remove("active");
+};
 
-    document.getElementById('message-card')
-    .classList.remove('active');
-
-});
-
-/* BOTON */
-
-document.getElementById('btn-enter')
-.addEventListener('click',()=>{
-
-    document.getElementById('intro-screen')
-    .style.display='none';
-
-});
+document.getElementById("btn-enter").onclick = () => {
+    document.getElementById("intro-screen").style.display = "none";
+};
 
 /* ANIMACION */
-
 function animate(){
 
     requestAnimationFrame(animate);
 
-    sprites.forEach((sprite)=>{
-
-        sprite.userData.angle += 0.002;
-
-        sprite.position.x =
-        Math.cos(sprite.userData.angle)
-        * sprite.userData.radius;
-
-        sprite.position.z =
-        Math.sin(sprite.userData.angle)
-        * sprite.userData.radius;
-
+    sprites.forEach(s=>{
+        s.userData.angle += 0.002;
+        s.position.x = Math.cos(s.userData.angle)*s.userData.r;
+        s.position.z = Math.sin(s.userData.angle)*s.userData.r;
     });
 
     controls.update();
-
     renderer.render(scene,camera);
-
 }
 
 animate();
 
-/* RESPONSIVE */
-
-window.addEventListener('resize',()=>{
-
-    camera.aspect =
-    window.innerWidth/window.innerHeight;
-
+/* RESIZE */
+window.addEventListener("resize",()=>{
+    camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
-
-    renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-    );
-
+    renderer.setSize(window.innerWidth,window.innerHeight);
 });
 
 </script>
