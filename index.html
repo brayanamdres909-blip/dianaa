@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Alejandra, Mi vida ❤️</title>
+<title>Diana Alejandra ❤️</title>
 
 <style>
 body{
@@ -70,7 +70,7 @@ body{
     border-radius:15px;
     text-align:center;
     display:none;
-    max-width:300px;
+    max-width:350px;
     border:1px solid #ff9bb3;
     z-index:5;
 }
@@ -88,7 +88,6 @@ body{
     cursor:pointer;
 }
 
-/* CANVAS */
 canvas{
     display:block;
 }
@@ -112,43 +111,38 @@ canvas{
 </div>
 
 <div id="card">
-<h2> Alejandra 💖</h2>
+<h2>Diana Alejandra 💖</h2>
 <p id="text"></p>
 <button id="btnClose">Cerrar</button>
 </div>
 
-<!-- 🎵 MÚSICA (opcional) -->
-<audio id="music" loop>
-  <source src="musica.mp3" type="audio/mpeg">
-</audio>
-
 <script type="module">
 import * as THREE from 'three';
 
-/* 💖 FRASES CORTAS Y CLARAS */
+/* 💖 FRASES CORREGIDAS Y LIMPIAS */
 const frases = [
-"Esa sonrisa tuya, que desarma cualquier tristeza y me deja sin defensa."
-"Tu mirada única, que dice más que mil palabras y me encuentra siempre."
-"Tu forma de ser, tan auténtica, que hace que todo a tu alrededor se sienta real."
-"Tu risa real, que suena a felicidad pura y me contagia sin pedir permiso."
-"Tu voz tranquila, que calma mis pensamientos cuando todo se vuelve ruido."
-"Tu energía bonita, que ilumina incluso los días que parecen apagados."
-"Tu forma de hablar, que convierte lo simple en algo que quiero escuchar siempre."
-"Tu calma, que me enseña que el amor también puede ser paz."
-"Tu ternura, que se siente como un abrazo que nunca se quiere soltar."
-"Eres tú, sin esfuerzo, sin filtros, sin nada que sobre."
-"Simplemente tú, y con eso ya me basta para quedarme."
-"Tu alegría, que le pone color a todo lo que antes era gris."
-"Tu forma de ver la vida, que me hace querer quedarme en tu mundo un rato más."
-"Tu espontaneidad, que convierte cualquier momento en algo inolvidable."
-"Tu dulzura, que no se explica, solo se siente y se agradece."
+"Esa sonrisa tuya, que desarma cualquier tristeza y me deja sin defensa.",
+"Tu mirada única, que dice más que mil palabras y me encuentra siempre.",
+"Tu forma de ser, tan auténtica, que hace que todo a tu alrededor se sienta real.",
+"Tu risa real, que suena a felicidad pura y me contagia sin pedir permiso.",
+"Tu voz tranquila, que calma mis pensamientos cuando todo se vuelve ruido.",
+"Tu energía bonita, que ilumina incluso los días que parecen apagados.",
+"Tu forma de hablar, que convierte lo simple en algo que quiero escuchar siempre.",
+"Tu calma, que me enseña que el amor también puede ser paz.",
+"Tu ternura, que se siente como un abrazo que nunca se quiere soltar.",
+"Eres tú, sin esfuerzo, sin filtros, sin nada que sobre.",
+"Simplemente tú, y con eso ya me basta para quedarme.",
+"Tu alegría, que le pone color a todo lo que antes era gris.",
+"Tu forma de ver la vida, que me hace querer quedarme en tu mundo un rato más.",
+"Tu espontaneidad, que convierte cualquier momento en algo inolvidable.",
+"Tu dulzura, que no se explica, solo se siente y se agradece.",
 "Tu esencia, que no se busca… pero cuando llega, se queda para siempre."
 ];
 
 let scene, camera, renderer, objects = [];
 
 document.getElementById("btnStart").addEventListener("click", start);
-document.getElementById("btnClose").addEventListener("click", ()=> {
+document.getElementById("btnClose").addEventListener("click", () => {
     document.getElementById("card").style.display = "none";
 });
 
@@ -156,12 +150,6 @@ function start(){
 
     document.getElementById("intro").style.display = "none";
 
-    /* 🎵 MUSICA */
-    const music = document.getElementById("music");
-    music.volume = 0.4;
-    music.play().catch(()=>{});
-
-    /* 🌌 ESCENA */
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(
@@ -177,9 +165,8 @@ function start(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(0.6, 10, 10);
+    const geometry = new THREE.SphereGeometry(0.7, 10, 10);
 
-    /* ✨ DESTELLOS */
     for(let i=0;i<frases.length;i++){
 
         const material = new THREE.MeshBasicMaterial({
@@ -190,9 +177,9 @@ function start(){
 
         const sphere = new THREE.Mesh(geometry, material);
 
-        sphere.position.x = (Math.random()-0.5)*100;
-        sphere.position.y = (Math.random()-0.5)*70;
-        sphere.position.z = (Math.random()-0.5)*100;
+        sphere.position.x = (Math.random()-0.5)*110;
+        sphere.position.y = (Math.random()-0.5)*80;
+        sphere.position.z = (Math.random()-0.5)*110;
 
         sphere.userData.text = frases[i];
 
@@ -239,4 +226,19 @@ function animate(){
     });
 
     renderer.render(scene,camera);
-}:contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}:contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}
+}
+
+/* RESIZE */
+window.addEventListener("resize",()=>{
+
+    if(!camera) return;
+
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>
