@@ -107,17 +107,17 @@ canvas{
 
 <div id="intro">
 <h1>Diana Alejandra 💖</h1>
-<p>La más hermosa… la más preciosa… mi universo completo.</p>
+<p>Mi universo favorito eres tú.</p>
 <button id="btnStart">Entrar</button>
 </div>
 
 <div id="card">
-<h2 id="title"></h2>
+<h2>Diana Alejandra 💖</h2>
 <p id="text"></p>
 <button id="btnClose">Cerrar</button>
 </div>
 
-<!-- 🎵 MÚSICA REAL -->
+<!-- 🎵 MÚSICA -->
 <audio id="music" loop>
   <source src="musica.mp3" type="audio/mpeg">
 </audio>
@@ -125,36 +125,44 @@ canvas{
 <script type="module">
 import * as THREE from 'three';
 
-/* 💖 FRASES NATURALES (NO REPETIDAS) */
 const frases = [
-"Me gusta cómo eres sin esfuerzo",
-"Tu forma de hablar me calma",
-"Tu sonrisa cambia todo",
-"Contigo todo se siente más fácil",
-"No tienes idea de lo mucho que significas",
-"Me encanta escucharte",
-"Tu forma de ver la vida es única",
-"Eres especial sin darte cuenta",
-"Me haces bien",
-"Simplemente tú, Diana"
+"Me gusta cómo te ríes sin darte cuenta",
+"Tu forma de hablar cuando estás feliz",
+"Cuando te emocionas por cosas pequeñas",
+"La forma en que miras todo con curiosidad",
+"Tu voz cuando estás tranquila",
+"Tu manera de ser sin fingir nada",
+"Cuando te pones seria sin razón",
+"Tu espontaneidad única",
+"Cómo haces todo más ligero",
+"Eres tú, sin filtros",
+"Tu forma de caminar",
+"Tu energía",
+"Tu manera de escuchar",
+"Tu forma de sonreír",
+"Tu paciencia",
+"Tu forma de pensar",
+"Tu ternura",
+"Tu mirada distraída",
+"Tu forma de explicar cosas",
+"Tu risa real"
 ];
 
 let scene, camera, renderer, objects = [];
 
 document.getElementById("btnStart").addEventListener("click", start);
-document.getElementById("btnClose").addEventListener("click", closeCard);
+document.getElementById("btnClose").addEventListener("click", ()=> {
+    document.getElementById("card").style.display = "none";
+});
 
 function start(){
 
     document.getElementById("intro").style.display = "none";
 
-    /* 🎵 MUSICA */
+    /* 🎵 MÚSICA */
     const music = document.getElementById("music");
     music.volume = 0.5;
-
-    music.play().catch(()=>{
-        console.log("El navegador bloqueó autoplay, pero se activará con interacción.");
-    });
+    music.play().catch(()=>{});
 
     /* 🌌 ESCENA */
     scene = new THREE.Scene();
@@ -174,7 +182,8 @@ function start(){
 
     const geometry = new THREE.SphereGeometry(0.7, 10, 10);
 
-    for(let i=0;i<80;i++){
+    /* ✨ CADA DESTELLO = UNA FRASE */
+    for(let i=0;i<frases.length;i++){
 
         const material = new THREE.MeshBasicMaterial({
             color: new THREE.Color().setHSL(Math.random(), 1, 0.6),
@@ -188,6 +197,8 @@ function start(){
         sphere.position.y = (Math.random()-0.5)*80;
         sphere.position.z = (Math.random()-0.5)*120;
 
+        sphere.userData.text = frases[i];
+
         scene.add(sphere);
         objects.push(sphere);
     }
@@ -195,7 +206,7 @@ function start(){
     animate();
 }
 
-/* 💖 CLICK */
+/* CLICK */
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -214,39 +225,27 @@ window.addEventListener("click",(e)=>{
 
         const obj = hits[0].object;
 
-        document.getElementById("title").innerText = "Diana Alejandra 💖";
-
-        document.getElementById("text").innerText =
-`Me gusta cómo eres sin esfuerzo.
-Tu forma de hablar me calma.
-Tu sonrisa cambia todo.
-Contigo todo se siente más fácil.
-No tienes idea de lo mucho que significas para mí.`;
+        document.getElementById("text").innerText = obj.userData.text;
 
         document.getElementById("card").style.display = "block";
     }
 });
 
-function closeCard(){
-    document.getElementById("card").style.display = "none";
-}
-
-/* ✨ ANIMACIÓN */
+/* ANIMACIÓN */
 function animate(){
     requestAnimationFrame(animate);
 
     objects.forEach(o=>{
         o.rotation.y += 0.003;
-        o.scale.set(
-            1 + Math.sin(Date.now()*0.002)*0.2,
-            1 + Math.sin(Date.now()*0.002)*0.2,
-            1
-        );
+
+        const s = 1 + Math.sin(Date.now()*0.002 + o.position.x)*0.2;
+        o.scale.set(s,s,s);
     });
 
     renderer.render(scene,camera);
 }
 
+/* RESIZE */
 window.addEventListener("resize",()=>{
 
     if(!camera) return;
