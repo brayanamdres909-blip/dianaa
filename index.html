@@ -3,18 +3,12 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DIANA ALEJANDRA</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
-    --primary:#ffb3c6;
-    --secondary:#ff809f;
-    --accent:#ffd1dc;
-}
 
 *{
     margin:0;
@@ -24,19 +18,18 @@
 
 body{
     overflow:hidden;
-    background:#030102;
+    background:black;
     font-family:'Montserrat',sans-serif;
-    color:white;
 }
 
+/* FONDO */
 #canvas-container{
     position:absolute;
     width:100%;
     height:100%;
-    z-index:1;
 }
 
-/* PANTALLA PRINCIPAL */
+/* PANTALLA INICIO */
 #intro-screen{
     position:absolute;
     top:0;
@@ -47,52 +40,52 @@ body{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    text-align:center;
+    background:url("diana.jpg") center/cover no-repeat;
     z-index:10;
-
-    background-image:url("diana.jpg");
-    background-size:cover;
-    background-position:center;
 }
 
 #intro-screen::before{
     content:"";
     position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
     background:rgba(0,0,0,0.55);
     backdrop-filter:blur(4px);
+    z-index:1;
+    pointer-events:none;
 }
 
 #intro-screen h1{
     position:relative;
-    z-index:2;
+    z-index:5;
+    color:white;
     font-size:4rem;
-    letter-spacing:6px;
-    color:#fff;
-    text-shadow:0 0 20px rgba(255,255,255,0.8);
+    letter-spacing:5px;
     margin-bottom:25px;
     font-family:'Cormorant Garamond',serif;
+    text-shadow:0 0 20px hotpink;
 }
 
 #btn-enter{
     position:relative;
-    z-index:2;
-    padding:14px 45px;
+    z-index:5;
+    padding:15px 45px;
     border:none;
     border-radius:50px;
-    cursor:pointer;
-    background:rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.2);
     color:white;
+    cursor:pointer;
     font-size:1rem;
     letter-spacing:4px;
-    backdrop-filter:blur(10px);
     transition:0.4s;
+    backdrop-filter:blur(10px);
 }
 
 #btn-enter:hover{
-    transform:scale(1.05);
-    background:rgba(255,255,255,0.3);
+    transform:scale(1.08);
+    background:rgba(255,255,255,0.35);
 }
 
 /* TARJETA */
@@ -103,12 +96,12 @@ body{
     transform:translate(-50%,-50%);
     width:85%;
     max-width:420px;
-    padding:40px;
-    background:rgba(20,20,20,0.7);
-    backdrop-filter:blur(20px);
-    border-radius:30px;
+    background:rgba(20,20,20,0.75);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+    padding:35px;
     text-align:center;
-    z-index:50;
+    z-index:30;
     opacity:0;
     pointer-events:none;
     transition:0.5s;
@@ -127,14 +120,15 @@ body{
 #card-title{
     color:#ffb3c6;
     margin-bottom:15px;
-    letter-spacing:2px;
+    letter-spacing:3px;
 }
 
 #card-text{
+    color:white;
     font-size:1.5rem;
     line-height:1.4;
-    margin-bottom:25px;
     font-family:'Cormorant Garamond',serif;
+    margin-bottom:25px;
 }
 
 #btn-close{
@@ -144,27 +138,14 @@ body{
     cursor:pointer;
 }
 
-/* PUNTO CENTRO */
-#crosshair{
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:white;
-    transform:translate(-50%,-50%);
-    z-index:40;
-}
-
 </style>
 
 <script type="importmap">
 {
-    "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
 }
 </script>
 
@@ -177,12 +158,10 @@ body{
     <button id="btn-enter">EXPLORAR</button>
 </div>
 
-<div id="crosshair"></div>
-
 <div id="message-card">
     <div id="card-icon">💖</div>
     <div id="card-title">PARA TI</div>
-    <p id="card-text"></p>
+    <div id="card-text"></div>
     <button id="btn-close">CERRAR</button>
 </div>
 
@@ -209,19 +188,25 @@ const frases = [
 "Mi amor 💞",
 "Mi niña 🌷",
 "Preciosa 💫",
-"Muñequita 🦋",
-"Mi tesoro 💎",
-"Corazoncito ❤️",
-"Mi patrona 😏",
-"Mi desastre favorito 😂"
+"Muñequita 🦋"
 ];
 
-const container = document.getElementById('canvas-container');
+const mensajes = [
+"Eres lo mejor que me ha pasado ❤️",
+"Tu sonrisa ilumina mi universo ✨",
+"No cambio tus abrazos por nada 💖",
+"Eres mi lugar favorito 🌸",
+"Cada día contigo es especial 💕",
+"Mi vida tiene más sentido contigo 💫",
+"Siempre voy a elegirte ❤️"
+];
+
+const container = document.getElementById("canvas-container");
 
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
-55,
+60,
 window.innerWidth/window.innerHeight,
 0.1,
 1000
@@ -239,26 +224,62 @@ renderer.setSize(window.innerWidth,window.innerHeight);
 container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera,renderer.domElement);
+
 controls.enableDamping = true;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.5;
+
+/* ESTRELLAS */
+
+const starsGeometry = new THREE.BufferGeometry();
+
+const starVertices = [];
+
+for(let i=0;i<3000;i++){
+
+    const x = (Math.random()-0.5)*2000;
+    const y = (Math.random()-0.5)*2000;
+    const z = (Math.random()-0.5)*2000;
+
+    starVertices.push(x,y,z);
+}
+
+starsGeometry.setAttribute(
+'position',
+new THREE.Float32BufferAttribute(starVertices,3)
+);
+
+const starsMaterial = new THREE.PointsMaterial({
+color:0xffffff,
+size:1
+});
+
+const stars = new THREE.Points(
+starsGeometry,
+starsMaterial
+);
+
+scene.add(stars);
+
+/* TEXTOS */
 
 const sprites = [];
 
 function createTextSprite(text){
 
     const canvas = document.createElement('canvas');
+
     canvas.width = 512;
     canvas.height = 512;
 
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = 'rgba(255,255,255,0)';
-    ctx.fillRect(0,0,512,512);
-
     ctx.font = 'bold 42px Arial';
-    ctx.fillStyle = '#ffffff';
+
+    ctx.fillStyle = 'white';
+
     ctx.textAlign = 'center';
+
     ctx.shadowColor = '#ff69b4';
     ctx.shadowBlur = 25;
 
@@ -284,7 +305,7 @@ frases.forEach((frase,i)=>{
 
     const angle = (i/frases.length)*Math.PI*2;
 
-    const radius = 40 + Math.random()*25;
+    const radius = 40 + Math.random()*20;
 
     sprite.position.set(
         Math.cos(angle)*radius,
@@ -303,7 +324,10 @@ frases.forEach((frase,i)=>{
 
 });
 
+/* INTERACCION */
+
 const raycaster = new THREE.Raycaster();
+
 const mouse = new THREE.Vector2();
 
 window.addEventListener('mousemove',(event)=>{
@@ -321,11 +345,11 @@ window.addEventListener('click',()=>{
 
     if(intersects.length > 0){
 
-        const texto = intersects[0].object.material.map.image
-        ? "Eres la persona más hermosa de mi universo ❤️"
-        : "";
+        const randomMessage =
+        mensajes[Math.floor(Math.random()*mensajes.length)];
 
-        document.getElementById('card-text').innerText = texto;
+        document.getElementById('card-text').innerText =
+        randomMessage;
 
         document.getElementById('message-card')
         .classList.add('active');
@@ -341,6 +365,8 @@ document.getElementById('btn-close')
 
 });
 
+/* BOTON FUNCIONANDO */
+
 document.getElementById('btn-enter')
 .addEventListener('click',()=>{
 
@@ -348,6 +374,8 @@ document.getElementById('btn-enter')
     .style.display='none';
 
 });
+
+/* ANIMACION */
 
 function animate(){
 
@@ -370,17 +398,24 @@ function animate(){
     controls.update();
 
     renderer.render(scene,camera);
+
 }
 
 animate();
 
+/* RESPONSIVE */
+
 window.addEventListener('resize',()=>{
 
-    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.aspect =
+    window.innerWidth/window.innerHeight;
 
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+    );
 
 });
 
