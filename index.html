@@ -23,31 +23,43 @@ body{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    background:black;
     z-index:10;
+    text-align:center;
+    background-image:url("diana.jpg");
+    background-size:cover;
+    background-position:center;
+}
+
+#intro::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.55);
+    z-index:-1;
 }
 
 #intro h1{
+    font-size:42px;
     color:#ff9bb3;
-    font-size:40px;
 }
 
 #intro p{
-    max-width:300px;
-    text-align:center;
-    color:#ccc;
+    max-width:320px;
+    color:#eee;
+    margin:15px;
 }
 
 #intro button{
-    padding:10px 25px;
+    padding:12px 25px;
     border:1px solid pink;
     background:none;
     color:white;
     cursor:pointer;
-    margin-top:15px;
+    border-radius:20px;
 }
 
-/* TARJETA */
+/* CARD */
 #card{
     position:absolute;
     top:50%;
@@ -56,9 +68,14 @@ body{
     background:rgba(0,0,0,0.9);
     padding:20px;
     border-radius:15px;
-    display:none;
     text-align:center;
+    display:none;
+    max-width:320px;
     border:1px solid #ff9bb3;
+}
+
+#card h2{
+    color:#ff9bb3;
 }
 
 #card button{
@@ -70,13 +87,12 @@ body{
     cursor:pointer;
 }
 
-/* CANVAS */
+/* canvas */
 canvas{
     display:block;
 }
 </style>
 
-<!-- THREE IMPORT -->
 <script type="importmap">
 {
   "imports": {
@@ -89,8 +105,8 @@ canvas{
 <body>
 
 <div id="intro">
-<h1>Diana Alejandra</h1>
-<p>La más hermosa, la más preciosa… mi universo completo.</p>
+<h1>Diana Alejandra 💖</h1>
+<p>La más hermosa… la más preciosa… mi universo completo.</p>
 <button id="btnStart">Entrar</button>
 </div>
 
@@ -103,31 +119,32 @@ canvas{
 <script type="module">
 import * as THREE from 'three';
 
-/* ====== FRASES ====== */
+/* 💖 FRASES MEJORADAS (NO REPETIDAS) */
 const frases = [
-"Tus ojos verdes",
-"Tu sonrisa",
-"Tu forma de mirarme",
-"Tu voz",
-"Lo hermosa que eres",
-"Tu esencia",
-"Tus besos",
-"Tu presencia",
-"Todo lo que eres",
+"Tus ojos verdes que me calman",
+"La forma en que sonríes sin darte cuenta",
+"Tu voz cuando dices mi nombre",
+"Tu forma de abrazarme fuerte",
+"La paz que siento contigo",
+"Tu forma de hacerme reír",
+"Tu mirada cuando te pierdes en mí",
+"Lo hermosa que eres sin esfuerzo",
+"Tu forma de cuidar a los demás",
+"Tu manera de ser tan tú",
+"Cómo haces especial lo simple",
+"Tu forma de querer de verdad",
+"Lo que siento cuando estás cerca",
+"Tu energía que me tranquiliza",
+"Tu forma de existir en mi vida",
+"Todo lo que eres sin intentar ser perfecta",
 "Que seas tú, Diana Alejandra"
 ];
 
-/* ====== VARIABLES ====== */
 let scene, camera, renderer, objects = [];
 
-/* ====== BOTONES (CLAVE PARA QUE FUNCIONE) ====== */
-const btnStart = document.getElementById("btnStart");
-const btnClose = document.getElementById("btnClose");
+document.getElementById("btnStart").addEventListener("click", start);
+document.getElementById("btnClose").addEventListener("click", closeCard);
 
-btnStart.addEventListener("click", start);
-btnClose.addEventListener("click", closeCard);
-
-/* ====== INICIO ====== */
 function start(){
 
     document.getElementById("intro").style.display = "none";
@@ -167,7 +184,6 @@ function start(){
     animate();
 }
 
-/* ====== CLICK INTERACCIÓN ====== */
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -178,7 +194,7 @@ window.addEventListener("click",(e)=>{
     mouse.x = (e.clientX / window.innerWidth)*2 - 1;
     mouse.y = -(e.clientY / window.innerHeight)*2 + 1;
 
-    raycaster.setFromCamera(mouse, camera);
+    raycaster.setFromCamera(mouse,camera);
 
     const hits = raycaster.intersectObjects(objects);
 
@@ -189,30 +205,27 @@ window.addEventListener("click",(e)=>{
         document.getElementById("title").innerText = obj.userData.text;
 
         document.getElementById("text").innerText =
-        "Diana Alejandra… la más hermosa, la más preciosa. Eres la razón por la que todo en mi vida tiene sentido.";
+        "Diana Alejandra… eres la persona que cambió mi forma de ver todo. No eres solo especial, eres irrepetible para mí.";
 
         document.getElementById("card").style.display = "block";
     }
 });
 
-/* ====== CERRAR TARJETA ====== */
 function closeCard(){
     document.getElementById("card").style.display = "none";
 }
 
-/* ====== ANIMACIÓN ====== */
 function animate(){
     requestAnimationFrame(animate);
 
     objects.forEach(o=>{
         o.rotation.y += 0.01;
-        o.rotation.x += 0.005;
+        o.rotation.x += 0.004;
     });
 
-    renderer.render(scene, camera);
+    renderer.render(scene,camera);
 }
 
-/* ====== RESPONSIVE ====== */
 window.addEventListener("resize",()=>{
 
     if(!camera) return;
