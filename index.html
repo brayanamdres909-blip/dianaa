@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Alejandra ❤️</title>
+<title>Diana Alejandra ❤️</title>
 
 <style>
 body{
@@ -14,7 +14,7 @@ body{
     color:white;
 }
 
-/* ===== INTRO ===== */
+/* INTRO */
 #intro{
     position:absolute;
     width:100%;
@@ -60,7 +60,7 @@ body{
     border-radius:20px;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 #card{
     position:absolute;
     top:50%;
@@ -89,7 +89,6 @@ body{
     cursor:pointer;
 }
 
-/* canvas */
 canvas{
     display:block;
 }
@@ -108,7 +107,7 @@ canvas{
 
 <div id="intro">
 <h1>Diana Alejandra 💖</h1>
-<p>La más hermosa, la más preciosa… la más preciosa, mi universo completo.</p>
+<p>La más hermosa… la más preciosa… mi universo completo.</p>
 <button id="btnStart">Entrar</button>
 </div>
 
@@ -118,20 +117,26 @@ canvas{
 <button id="btnClose">Cerrar</button>
 </div>
 
+<!-- 🎵 MÚSICA REAL -->
+<audio id="music" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
 <script type="module">
 import * as THREE from 'three';
 
+/* 💖 FRASES NATURALES (NO REPETIDAS) */
 const frases = [
-"Tus ojos verdes que me calman",
-"Tu sonrisa que me ilumina",
-"Tu voz que me tranquiliza",
-"Tu forma de abrazarme",
-"Lo hermosa que eres sin esfuerzo",
-"Tu esencia única",
-"Tu forma de ser",
-"Tú, simplemente tú",
-"Todo lo que eres",
-"Mi lugar favorito eres tú"
+"Me gusta cómo eres sin esfuerzo",
+"Tu forma de hablar me calma",
+"Tu sonrisa cambia todo",
+"Contigo todo se siente más fácil",
+"No tienes idea de lo mucho que significas",
+"Me encanta escucharte",
+"Tu forma de ver la vida es única",
+"Eres especial sin darte cuenta",
+"Me haces bien",
+"Simplemente tú, Diana"
 ];
 
 let scene, camera, renderer, objects = [];
@@ -143,6 +148,15 @@ function start(){
 
     document.getElementById("intro").style.display = "none";
 
+    /* 🎵 MUSICA */
+    const music = document.getElementById("music");
+    music.volume = 0.5;
+
+    music.play().catch(()=>{
+        console.log("El navegador bloqueó autoplay, pero se activará con interacción.");
+    });
+
+    /* 🌌 ESCENA */
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(
@@ -158,15 +172,14 @@ function start(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    /* ✨ DESTELLOS MEJORADOS */
-    const geometry = new THREE.SphereGeometry(0.6, 8, 8);
+    const geometry = new THREE.SphereGeometry(0.7, 10, 10);
 
     for(let i=0;i<80;i++){
 
         const material = new THREE.MeshBasicMaterial({
-            color: new THREE.Color().setHSL(Math.random(), 1, 0.7),
-            transparent: true,
-            opacity: 0.9
+            color: new THREE.Color().setHSL(Math.random(), 1, 0.6),
+            transparent:true,
+            opacity:0.9
         });
 
         const sphere = new THREE.Mesh(geometry, material);
@@ -201,29 +214,15 @@ window.addEventListener("click",(e)=>{
 
         const obj = hits[0].object;
 
-        document.getElementById("title").innerText = obj.userData?.text || "Diana Alejandra";
+        document.getElementById("title").innerText = "Diana Alejandra 💖";
 
         document.getElementById("text").innerText =
-`Diana Alejandra…
+`Me gusta cómo eres sin esfuerzo.
+Tu forma de hablar me calma.
+Tu sonrisa cambia todo.
+Contigo todo se siente más fácil.
+No tienes idea de lo mucho que significas para mí.`;
 
-Eres mi lugar favorito en el universo.
-Contigo, hasta el silencio se siente bonito.
-
-Todo contigo se siente perfecto,
-como si el mundo finalmente encajara cuando estás cerca.
-
-No necesito más mapas si tú eres mi destino. 💖
-
-Tu presencia convierte lo simple en algo mágico,
-y lo cotidiano en algo que quiero repetir mil veces.
-
-Si el mundo se apaga, tú eres la luz que me queda. ✨
-
-Contigo aprendí que “hogar” no es un lugar,
-sino la forma en que me haces sentir.
-
-Eres ese pensamiento que no se va,
-y que honestamente… no quiero que se vaya nunca.
         document.getElementById("card").style.display = "block";
     }
 });
@@ -237,9 +236,12 @@ function animate(){
     requestAnimationFrame(animate);
 
     objects.forEach(o=>{
-        const s = 1 + Math.sin(Date.now() * 0.002 + o.position.x) * 0.3;
-        o.scale.set(s, s, s);
-        o.rotation.y += 0.002;
+        o.rotation.y += 0.003;
+        o.scale.set(
+            1 + Math.sin(Date.now()*0.002)*0.2,
+            1 + Math.sin(Date.now()*0.002)*0.2,
+            1
+        );
     });
 
     renderer.render(scene,camera);
