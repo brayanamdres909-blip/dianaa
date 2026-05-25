@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diana Alejandra ❤️</title>
+<title> Alejandra, Mi vida ❤️</title>
 
 <style>
 body{
@@ -41,18 +41,17 @@ body{
 }
 
 #intro h1{
-    font-size:42px;
+    font-size:40px;
     color:#ff9bb3;
 }
 
 #intro p{
-    max-width:320px;
-    color:#eee;
-    margin:15px;
+    max-width:300px;
+    margin:10px;
 }
 
 #intro button{
-    padding:12px 25px;
+    padding:10px 20px;
     border:1px solid pink;
     background:none;
     color:white;
@@ -60,18 +59,18 @@ body{
     border-radius:20px;
 }
 
-/* CARD */
+/* TARJETA */
 #card{
     position:absolute;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    background:rgba(0,0,0,0.9);
+    background:rgba(0,0,0,0.92);
     padding:20px;
     border-radius:15px;
     text-align:center;
     display:none;
-    max-width:320px;
+    max-width:300px;
     border:1px solid #ff9bb3;
     z-index:5;
 }
@@ -89,6 +88,7 @@ body{
     cursor:pointer;
 }
 
+/* CANVAS */
 canvas{
     display:block;
 }
@@ -107,17 +107,17 @@ canvas{
 
 <div id="intro">
 <h1>Diana Alejandra 💖</h1>
-<p>Mi universo favorito eres tú.</p>
+<p>Un pequeño universo hecho para ti.</p>
 <button id="btnStart">Entrar</button>
 </div>
 
 <div id="card">
-<h2>Diana Alejandra 💖</h2>
+<h2> Alejandra 💖</h2>
 <p id="text"></p>
 <button id="btnClose">Cerrar</button>
 </div>
 
-<!-- 🎵 MÚSICA -->
+<!-- 🎵 MÚSICA (opcional) -->
 <audio id="music" loop>
   <source src="musica.mp3" type="audio/mpeg">
 </audio>
@@ -125,27 +125,24 @@ canvas{
 <script type="module">
 import * as THREE from 'three';
 
+/* 💖 FRASES CORTAS Y CLARAS */
 const frases = [
-"Me gusta cómo te ríes sin darte cuenta",
-"Tu forma de hablar cuando estás feliz",
-"Cuando te emocionas por cosas pequeñas",
-"La forma en que miras todo con curiosidad",
-"Tu voz cuando estás tranquila",
-"Tu manera de ser sin fingir nada",
-"Cuando te pones seria sin razón",
-"Tu espontaneidad única",
-"Cómo haces todo más ligero",
-"Eres tú, sin filtros",
-"Tu forma de caminar",
-"Tu energía",
-"Tu manera de escuchar",
-"Tu forma de sonreír",
-"Tu paciencia",
-"Tu forma de pensar",
-"Tu ternura",
-"Tu mirada distraída",
-"Tu forma de explicar cosas",
-"Tu risa real"
+"Esa sonrisa tuya, que desarma cualquier tristeza y me deja sin defensa."
+"Tu mirada única, que dice más que mil palabras y me encuentra siempre."
+"Tu forma de ser, tan auténtica, que hace que todo a tu alrededor se sienta real."
+"Tu risa real, que suena a felicidad pura y me contagia sin pedir permiso."
+"Tu voz tranquila, que calma mis pensamientos cuando todo se vuelve ruido."
+"Tu energía bonita, que ilumina incluso los días que parecen apagados."
+"Tu forma de hablar, que convierte lo simple en algo que quiero escuchar siempre."
+"Tu calma, que me enseña que el amor también puede ser paz."
+"Tu ternura, que se siente como un abrazo que nunca se quiere soltar."
+"Eres tú, sin esfuerzo, sin filtros, sin nada que sobre."
+"Simplemente tú, y con eso ya me basta para quedarme."
+"Tu alegría, que le pone color a todo lo que antes era gris."
+"Tu forma de ver la vida, que me hace querer quedarme en tu mundo un rato más."
+"Tu espontaneidad, que convierte cualquier momento en algo inolvidable."
+"Tu dulzura, que no se explica, solo se siente y se agradece."
+"Tu esencia, que no se busca… pero cuando llega, se queda para siempre."
 ];
 
 let scene, camera, renderer, objects = [];
@@ -159,9 +156,9 @@ function start(){
 
     document.getElementById("intro").style.display = "none";
 
-    /* 🎵 MÚSICA */
+    /* 🎵 MUSICA */
     const music = document.getElementById("music");
-    music.volume = 0.5;
+    music.volume = 0.4;
     music.play().catch(()=>{});
 
     /* 🌌 ESCENA */
@@ -180,9 +177,9 @@ function start(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(0.7, 10, 10);
+    const geometry = new THREE.SphereGeometry(0.6, 10, 10);
 
-    /* ✨ CADA DESTELLO = UNA FRASE */
+    /* ✨ DESTELLOS */
     for(let i=0;i<frases.length;i++){
 
         const material = new THREE.MeshBasicMaterial({
@@ -193,9 +190,9 @@ function start(){
 
         const sphere = new THREE.Mesh(geometry, material);
 
-        sphere.position.x = (Math.random()-0.5)*120;
-        sphere.position.y = (Math.random()-0.5)*80;
-        sphere.position.z = (Math.random()-0.5)*120;
+        sphere.position.x = (Math.random()-0.5)*100;
+        sphere.position.y = (Math.random()-0.5)*70;
+        sphere.position.z = (Math.random()-0.5)*100;
 
         sphere.userData.text = frases[i];
 
@@ -223,9 +220,8 @@ window.addEventListener("click",(e)=>{
 
     if(hits.length > 0){
 
-        const obj = hits[0].object;
-
-        document.getElementById("text").innerText = obj.userData.text;
+        document.getElementById("text").innerText =
+        hits[0].object.userData.text;
 
         document.getElementById("card").style.display = "block";
     }
@@ -236,26 +232,11 @@ function animate(){
     requestAnimationFrame(animate);
 
     objects.forEach(o=>{
-        o.rotation.y += 0.003;
+        o.rotation.y += 0.002;
 
         const s = 1 + Math.sin(Date.now()*0.002 + o.position.x)*0.2;
         o.scale.set(s,s,s);
     });
 
     renderer.render(scene,camera);
-}
-
-/* RESIZE */
-window.addEventListener("resize",()=>{
-
-    if(!camera) return;
-
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-</script>
-
-</body>
-</html>
+}:contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}:contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}
